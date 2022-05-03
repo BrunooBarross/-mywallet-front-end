@@ -13,6 +13,7 @@ const Inputs = styled.form`
         border: none;
         border-radius: 5px;
         margin-top: 13px;
+        padding-left: 15px;
 
         font-family: 'Raleway';
         font-style: normal;
@@ -23,11 +24,7 @@ const Inputs = styled.form`
     }   
 
     input::placeholder{
-        padding-left: 15px;
         color: #000000;
     }
 `
-
-
-
 export default Inputs;
