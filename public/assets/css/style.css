@@ -10,7 +10,7 @@ body{
     background-color: #8C11BE;
 }
 
-@media screen and (max-width: 475px) {
+@media screen and (max-width: 375px) {
     .root{
         width: 100vw;
     }
