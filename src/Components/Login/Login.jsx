@@ -1,15 +1,35 @@
 import { Link, useNavigate } from 'react-router-dom';
+import {useState} from 'react'
 import styled from 'styled-components';
 import Inputs from '../Styleds-Globais/Inputs';
-
+import axios from 'axios';
 const Login = () => {
+    const navigate = useNavigate();
+    const [dadosLogin, setDadosLogin] = useState({email:"", senha:""});
+    const [alerta, setAlerta] = useState("");
+    function realizarLogin(event){
+        event.preventDefault();
+        setAlerta("");
+        const requisicaoPost = axios.post('http://localhost:5000/login',dadosLogin);
+        requisicaoPost.then(resposta =>{
+            navigate('/registros');
+        });requisicaoPost.catch(error =>{
+            if(error.response.status === 409){
+                setAlerta("Email ou senha incorretos");
+            }
+            console.log(error);
+        })
+    }
     return (
         <Container>
             <h1>MyWallet</h1>
-            <Inputs>
-                <input type="email" placeholder="E-mail"/>
-                <input type="password" placeholder="Senha"/>
-                <Botao>Entrar</Botao>
+            <Inputs onSubmit={realizarLogin}>
+                <input type="email" placeholder="E-mail"
+                    onChange={e => setDadosLogin({...dadosLogin,email: e.target.value})}required/>
+                <input type="password" placeholder="Senha"
+                    onChange={e => setDadosLogin({...dadosLogin,senha: e.target.value})}required/>
+                <Label>{alerta}</Label>
+                <Botao type="submit">Entrar</Botao>
             </Inputs>
             <Div>
                 <Link to= {`/cadastro`}>
@@ -69,5 +89,9 @@ const Div = styled.div`
         color: #FFFFFF;
     }
 `
-
+const Label = styled.label`
+    font-size: 13px;
+    color: red;  
+    margin-top: 5px;
+`
 export default Login;

@@ -16,7 +16,7 @@ const Cadastro = () => {
             return;
         }
         const requisicaoPost = axios.post('http://localhost:5000/cadastrar',dadosCadastro);
-        requisicaoPost.then(repostar =>{
+        requisicaoPost.then(resposta =>{
             navigate('/');
         });requisicaoPost.catch(error =>{
             if(error.response.status === 409){
