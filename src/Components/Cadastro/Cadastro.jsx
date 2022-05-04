@@ -1,20 +1,52 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Inputs from '../Styleds-Globais/Inputs';
+import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 const Cadastro = () => {
+    const navigate = useNavigate();
+    const [dadosCadastro, setDadosCadastro] = useState({nome:"", email:"", senha:"", verificarSenha:""});
+    const [alerta, setAlerta] = useState("");
+    function cadastrarUsuario(event){
+        event.preventDefault();
+        setAlerta("");
+        if(dadosCadastro.senha !== dadosCadastro.verificarSenha){
+            setAlerta("As senhas não conferem");
+            return;
+        }
+        const requisicaoPost = axios.post('http://localhost:5000/cadastrar',dadosCadastro);
+        requisicaoPost.then(repostar =>{
+            navigate('/');
+        });requisicaoPost.catch(error =>{
+            if(error.response.status === 409){
+                setAlerta("Email já cadastrado");
+            }
+            if(error.response.status === 406){
+                setAlerta("As senhas não conferem");
+            }
+            console.log("Não cadastrou", error);
+        })
+    }
+    
     return(
         <Container>
             <h1>MyWallet</h1>
-            <Inputs>
-                <input type="text" placeholder="Nome"/>
-                <input type="email" placeholder="E-mail"/>
-                <input type="password" placeholder="Senha"/>
-                <input type="password" placeholder="Confirme a senha"/>
-                <Botao>Cadastrar</Botao>
+            <Inputs onSubmit={cadastrarUsuario}>
+                <input type="text" placeholder="Nome"
+                    onChange={e => setDadosCadastro({...dadosCadastro,nome: e.target.value})}required/>
+                <input type="email" placeholder="E-mail"
+                    onChange={e => setDadosCadastro({...dadosCadastro,email: e.target.value})}required/>
+                <input type="password" placeholder="Senha"
+                    onChange={e => setDadosCadastro({...dadosCadastro,senha: e.target.value})}required/>
+                <input type="password" placeholder="Confirme a senha"
+                    onChange={e => setDadosCadastro({...dadosCadastro,verificarSenha: e.target.value})}required/>
+                    <Label>{alerta}</Label>
+                <Botao type="submit">Cadastrar</Botao>
             </Inputs>
             <Div>
                 <Link to= {`/`}>
-                        <span>Primeira vez? Cadastre-se!</span>
+                        <span>Já tem uma conta? Entre agora!</span>
                 </Link>  
             </Div>
         </Container>
@@ -69,5 +101,10 @@ const Div = styled.div`
         cursor: pointer;
         color: #FFFFFF;
     }
+`
+const Label = styled.label`
+    font-size: 13px;
+    color: red;  
+    margin-top: 5px;
 `
 export default Cadastro;
