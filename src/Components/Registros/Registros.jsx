@@ -21,9 +21,13 @@ const Registros = () => {
                 </Link>  
                 </div>
                 <div>
-                    <ion-icon name="remove-circle-outline"></ion-icon>
-                    <span>Nova saída</span>
-                </div>
+                    <Link to= {`/saida`}>
+                        <div>
+                            <ion-icon name="remove-circle-outline"></ion-icon>
+                            <span>Nova saída</span>
+                        </div>
+                    </Link>  
+                </div>  
             </Nav>
         </Container>
         

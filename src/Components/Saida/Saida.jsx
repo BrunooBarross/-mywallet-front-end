@@ -1,13 +1,61 @@
 import styled from 'styled-components';
 import Inputs from '../Styleds-Globais/Inputs';
+import {useState} from 'react'
+import NumberFormat from 'react-number-format';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import UserContext from '../Contexts/UserContext';
+import { useContext } from 'react';
+import * as dayjs from 'dayjs';
+import 'dayjs/locale/pt-br'
+
 const Saida = () => {
+    const { token } = useContext(UserContext);
+    const config = { headers: { Authorization: `Bearer ${token}`}}
+
+    const navigate = useNavigate();
+    const [valor, setValor] = useState("");
+    const [descricao, setDescricao] = useState("");
+    console.log(dayjs().locale('pt-br').format('DD/MM'));
+    function debitarValor(event){
+        event.preventDefault();
+        let valorConvertido = valor.toString().replace("R$", "")
+        valorConvertido = valorConvertido.replace(".", "");
+        valorConvertido = valorConvertido.replace(",", ".");
+        
+        const requisicaoPost = axios.post("http://localhost:5000/debito",{
+            tipo: "debito",
+            data: dayjs().locale('pt-br').format('DD/MM'),
+            valor: valorConvertido,
+            descricao
+        },config);
+        requisicaoPost.then(resposta =>{
+            navigate('/registros');
+        });requisicaoPost.catch(error =>{
+            console.log(error);
+        })
+    }
     return(
         <Container>
-            <h1>Nova Saída</h1>
-            <Inputs>
-                <input type="number" placeholder="Valor"/>
-                <input type="text" placeholder="Descrição"/>
-                <Botao>Salvar saída</Botao>
+            <h1>Nova saída</h1>
+            <Inputs onSubmit={debitarValor}>
+                <NumberFormat 
+                    placeholder="Valor"
+                    thousandSeparator='.' 
+                    prefix={'R$'} 
+                    onChange={e => setValor(e.target.value)}
+                    isNumericString={true}
+                    decimalSeparator=","
+                    decimalScale={2}
+                    required
+                />
+                <input 
+                    type="text" 
+                    placeholder="Descrição" 
+                    onChange={e => setDescricao(e.target.value)}
+                    required
+                />;
+                <Botao type="submit">Salvar Entrada</Botao>
             </Inputs>
         </Container>
     );

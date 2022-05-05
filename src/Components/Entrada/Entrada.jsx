@@ -6,6 +6,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import UserContext from '../Contexts/UserContext';
 import { useContext } from 'react';
+import * as dayjs from 'dayjs';
+import 'dayjs/locale/pt-br'
 
 const Entrada = () => {
     const { token } = useContext(UserContext);
@@ -15,14 +17,15 @@ const Entrada = () => {
     const [valor, setValor] = useState("");
     const [descricao, setDescricao] = useState("");
     
-    function realizarValor(event){
+    function creditarValor(event){
         event.preventDefault();
         let valorConvertido = valor.toString().replace("R$", "")
         valorConvertido = valorConvertido.replace(".", "");
         valorConvertido = valorConvertido.replace(",", ".");
         
-        const requisicaoPost = axios.post("http://localhost:5000/registro",{
+        const requisicaoPost = axios.post("http://localhost:5000/credito",{
             tipo: "credito",
+            data: dayjs().locale('pt-br').format('DD/MM'),
             valor: valorConvertido,
             descricao
         },config);
@@ -36,7 +39,7 @@ const Entrada = () => {
     return(
         <Container>
             <h1>Nova entrada</h1>
-            <Inputs onSubmit={realizarValor}>
+            <Inputs onSubmit={creditarValor}>
                 <NumberFormat 
                     placeholder="Valor"
                     thousandSeparator='.' 
