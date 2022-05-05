@@ -25,7 +25,9 @@ const Cadastro = () => {
             if(error.response.status === 406){
                 setAlerta("As senhas não conferem");
             }
-            console.log("Não cadastrou", error);
+            if(error.response.status === 422){
+                setAlerta("Email com formato inválido");
+            }
         })
     }
     

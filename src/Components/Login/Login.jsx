@@ -3,15 +3,22 @@ import {useState} from 'react'
 import styled from 'styled-components';
 import Inputs from '../Styleds-Globais/Inputs';
 import axios from 'axios';
+import UserContext from '../Contexts/UserContext';
+import { useContext } from 'react';
+
 const Login = () => {
     const navigate = useNavigate();
     const [dadosLogin, setDadosLogin] = useState({email:"", senha:""});
     const [alerta, setAlerta] = useState("");
+
+    const { setToken } = useContext(UserContext);
+
     function realizarLogin(event){
         event.preventDefault();
         setAlerta("");
         const requisicaoPost = axios.post('http://localhost:5000/login',dadosLogin);
         requisicaoPost.then(resposta =>{
+            setToken (resposta.data);
             navigate('/registros');
         });requisicaoPost.catch(error =>{
             if(error.response.status === 409){
@@ -20,6 +27,7 @@ const Login = () => {
             console.log(error);
         })
     }
+
     return (
         <Container>
             <h1>MyWallet</h1>
