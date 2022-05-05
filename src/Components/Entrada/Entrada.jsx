@@ -1,13 +1,59 @@
 import styled from 'styled-components';
 import Inputs from '../Styleds-Globais/Inputs';
+import {useState} from 'react'
+import NumberFormat from 'react-number-format';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import UserContext from '../Contexts/UserContext';
+import { useContext } from 'react';
+
 const Entrada = () => {
+    const { token } = useContext(UserContext);
+    const config = { headers: { Authorization: `Bearer ${token}`}}
+
+    const navigate = useNavigate();
+    const [valor, setValor] = useState("");
+    const [descricao, setDescricao] = useState("");
+    
+    function realizarValor(event){
+        event.preventDefault();
+        let valorConvertido = valor.toString().replace("R$", "")
+        valorConvertido = valorConvertido.replace(".", "");
+        valorConvertido = valorConvertido.replace(",", ".");
+        
+        const requisicaoPost = axios.post("http://localhost:5000/registro",{
+            tipo: "credito",
+            valor: valorConvertido,
+            descricao
+        },config);
+        requisicaoPost.then(resposta =>{
+            navigate('/registros');
+        });requisicaoPost.catch(error =>{
+            console.log(error);
+        })
+    }
+    
     return(
         <Container>
             <h1>Nova entrada</h1>
-            <Inputs>
-                <input type="number" placeholder="Valor"/>
-                <input type="text" placeholder="Descrição"/>
-                <Botao>Salvar Entrada</Botao>
+            <Inputs onSubmit={realizarValor}>
+                <NumberFormat 
+                    placeholder="Valor"
+                    thousandSeparator='.' 
+                    prefix={'R$'} 
+                    onChange={e => setValor(e.target.value)}
+                    isNumericString={true}
+                    decimalSeparator=","
+                    decimalScale={2}
+                    required
+                />
+                <input 
+                    type="text" 
+                    placeholder="Descrição" 
+                    onChange={e => setDescricao(e.target.value)}
+                    required
+                />;
+                <Botao type="submit">Salvar Entrada</Botao>
             </Inputs>
         </Container>
     );

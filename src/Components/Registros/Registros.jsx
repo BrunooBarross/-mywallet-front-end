@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const Registros = () => {
     return (
@@ -12,8 +13,12 @@ const Registros = () => {
             </RegistrosContainer>
             <Nav>
                 <div>
-                    <ion-icon name="add-circle-outline"></ion-icon>
-                    <span>Nova entrada</span>
+                <Link to= {`/entrada`}>
+                    <div>
+                        <ion-icon name="add-circle-outline"></ion-icon>
+                        <span>Nova entrada</span>
+                    </div>
+                </Link>  
                 </div>
                 <div>
                     <ion-icon name="remove-circle-outline"></ion-icon>
