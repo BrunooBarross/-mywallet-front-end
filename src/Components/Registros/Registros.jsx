@@ -4,12 +4,13 @@ import { useEffect, useState } from 'react';
 import { useContext } from 'react';
 import UserContext from '../Contexts/UserContext';
 import axios from 'axios';
+import Registro from './Registro'
 
 const Registros = () => {
-    const { token } = useContext(UserContext);
-    const[listarRegistro, setListarRegistro] = useState([])
-    const[saldo, setSaldo] = useState('')
-    
+    const { token, nomeUsuario } = useContext(UserContext);
+    const[listarRegistro, setListarRegistro] = useState([]);
+    const[saldo, setSaldo] = useState('');
+    const[sinalResultado, setSinalResultado] = useState(true);
     useEffect(() => {
         const config = { headers: { Authorization: `Bearer ${token}`}}
         const requisicaoGet = axios.get("http://localhost:5000/registros",config);
@@ -25,37 +26,40 @@ const Registros = () => {
                     resultado = resultado - parseFloat(data[property].valor);
                 }
             }
-            let valorConvertido =  resultado.toLocaleString('pt-br', {minimumFractionDigits: 2});
+            if(Math.sign(resultado) === 1){setSinalResultado(true);}
+            if(Math.sign(resultado) === -1){setSinalResultado(false);}
+            const valorConvertido =  resultado.toLocaleString('pt-br', {minimumFractionDigits: 2});
             setSaldo(valorConvertido);
         });
         requisicaoGet.catch(error => { 
             console.log(error);
         });
     }, [token]);
-   
+    console.log(listarRegistro);
     return (
         <Container>
             <Menu>
-                <span>Olá, {listarRegistro.nome}</span>
+                <span>Olá, {nomeUsuario}</span>
                 <ion-icon name="log-out-outline"></ion-icon>
             </Menu>
+
             <RegistrosContainer>
-                {/* {listarRegistro.map((item, key) =>
+                {listarRegistro.map((item, key) =>
                                 <Registro
                                     key={key}
                                     id={item._id}
-                                    nome={item.nome}
+                                    tipo={item.tipo}
                                     data={item.data}
                                     valor={item.valor}
                                     descricao={item.descricao}
                                     token={token}
-                />)}     */}
-                <div className="teste">
-                    <div>SALDO</div>
-                    <span>{saldo}</span>
-                </div>
+                />)}     
                 
             </RegistrosContainer>
+            <div className="teste">
+                <div>SALDO</div>
+                <Saldo sinal={sinalResultado}>{saldo}</Saldo>
+            </div>
             <Nav>
                 <div>
                 <Link to= {`/entrada`}>
@@ -79,12 +83,23 @@ const Registros = () => {
     );
 }
 
-const Container = styled.nav`
+const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
     height: 100%;
+    .teste{
+        display: flex;
+        justify-content: space-between;
+        width: 87%;
+        background-color: #FFFFFF;
+        border-radius: 0 0 10px 10px;
+        padding-top:10px;
+    }
+    .teste div{
+        margin-left: 15px;
+    }
 `
 const Menu = styled.div`
     display: flex;
@@ -111,34 +126,8 @@ const RegistrosContainer = styled.div`
     height: 66.8%;
     margin-top: 22px;
     background: #FFFFFF;
-    border-radius: 5px;
+    border-radius: 10px 10px 0 0 ;
     overflow-y: scroll;
-    
-    .teste{
-        background-color: #FFFFFF;
-        position: sticky;
-        top: 95%;
-        padding-left: 15px;
-        padding-right: 15px;
-        display: flex;
-        justify-content: space-between;
-        z-index: 10;
-
-        font-family: 'Raleway';
-        font-style: normal;
-        font-weight: 700;
-        font-size: 17px;
-        line-height: 20px;
-        color: #000000;
-    }
-
-    .teste span{
-        font-weight: 400;
-        font-size: 17px;
-        line-height: 20px;
-        color: #03AC00;
-    }
-
 `
 const Nav = styled.div`
     width: 87%;
@@ -173,4 +162,12 @@ const Nav = styled.div`
         margin-top: 32px;
     }
 `
+const Saldo = styled.span`
+    
+        margin-right: 11px;
+        font-weight: 400;
+        font-size: 17px;
+        line-height: 20px;
+        color: ${props => props.sinal? "#03AC00;" : "#C70000;"};;
+`;
 export default Registros;

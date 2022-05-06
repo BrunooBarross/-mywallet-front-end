@@ -11,14 +11,16 @@ const Login = () => {
     const [dadosLogin, setDadosLogin] = useState({email:"", senha:""});
     const [alerta, setAlerta] = useState("");
 
-    const { setToken } = useContext(UserContext);
+    const { setToken, setNomeUsuario } = useContext(UserContext);
 
     function realizarLogin(event){
         event.preventDefault();
         setAlerta("");
         const requisicaoPost = axios.post('http://localhost:5000/login',dadosLogin);
         requisicaoPost.then(resposta =>{
-            setToken (resposta.data);
+            console.log(resposta.data);
+            setToken (resposta.data.token);
+            setNomeUsuario (resposta.data.nome);
             navigate('/registros');
         });requisicaoPost.catch(error =>{
             if(error.response.status === 409){
