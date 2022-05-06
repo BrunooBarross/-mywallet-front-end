@@ -9,7 +9,7 @@ import Saida from "../Saida/Saida"
 
 const App = () => {
     const [token, setToken] = useState("");
-    console.log(token);
+   
     return (
         <UserContext.Provider value={{token, setToken}}>
             <BrowserRouter>

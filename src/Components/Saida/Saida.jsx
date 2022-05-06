@@ -24,7 +24,7 @@ const Saida = () => {
         valorConvertido = valorConvertido.replace(",", ".");
         
         const requisicaoPost = axios.post("http://localhost:5000/debito",{
-            tipo: "debito",
+            tipo: "saida",
             data: dayjs().locale('pt-br').format('DD/MM'),
             valor: valorConvertido,
             descricao

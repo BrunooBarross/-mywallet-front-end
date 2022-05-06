@@ -1,15 +1,60 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useContext } from 'react';
+import UserContext from '../Contexts/UserContext';
+import axios from 'axios';
 
 const Registros = () => {
+    const { token } = useContext(UserContext);
+    const[listarRegistro, setListarRegistro] = useState([])
+    const[saldo, setSaldo] = useState('')
+    
+    useEffect(() => {
+        const config = { headers: { Authorization: `Bearer ${token}`}}
+        const requisicaoGet = axios.get("http://localhost:5000/registros",config);
+        requisicaoGet.then(resposta => {
+            const { data } = resposta;
+            setListarRegistro(data);
+            let resultado = 0;
+            for(const property in data){
+                if(data[property].tipo === 'entrada'){
+                    resultado = resultado + parseFloat(data[property].valor);
+                }
+                if(data[property].tipo === 'saida'){
+                    resultado = resultado - parseFloat(data[property].valor);
+                }
+            }
+            let valorConvertido =  resultado.toLocaleString('pt-br', {minimumFractionDigits: 2});
+            setSaldo(valorConvertido);
+        });
+        requisicaoGet.catch(error => { 
+            console.log(error);
+        });
+    }, [token]);
+   
     return (
         <Container>
             <Menu>
-                <span>Olá, Fulano</span>
+                <span>Olá, {listarRegistro.nome}</span>
                 <ion-icon name="log-out-outline"></ion-icon>
             </Menu>
             <RegistrosContainer>
-                <h2>regis</h2>
+                {/* {listarRegistro.map((item, key) =>
+                                <Registro
+                                    key={key}
+                                    id={item._id}
+                                    nome={item.nome}
+                                    data={item.data}
+                                    valor={item.valor}
+                                    descricao={item.descricao}
+                                    token={token}
+                />)}     */}
+                <div className="teste">
+                    <div>SALDO</div>
+                    <span>{saldo}</span>
+                </div>
+                
             </RegistrosContainer>
             <Nav>
                 <div>
@@ -67,6 +112,32 @@ const RegistrosContainer = styled.div`
     margin-top: 22px;
     background: #FFFFFF;
     border-radius: 5px;
+    overflow-y: scroll;
+    
+    .teste{
+        background-color: #FFFFFF;
+        position: sticky;
+        top: 95%;
+        padding-left: 15px;
+        padding-right: 15px;
+        display: flex;
+        justify-content: space-between;
+        z-index: 10;
+
+        font-family: 'Raleway';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 17px;
+        line-height: 20px;
+        color: #000000;
+    }
+
+    .teste span{
+        font-weight: 400;
+        font-size: 17px;
+        line-height: 20px;
+        color: #03AC00;
+    }
 
 `
 const Nav = styled.div`
