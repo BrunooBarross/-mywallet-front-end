@@ -13,7 +13,7 @@ const Registros = () => {
     const[sinalResultado, setSinalResultado] = useState(true);
     useEffect(() => {
         const config = { headers: { Authorization: `Bearer ${token}`}}
-        const requisicaoGet = axios.get("http://localhost:5000/registros",config);
+        const requisicaoGet = axios.get("http://localhost:5000/registro",config);
         requisicaoGet.then(resposta => {
             const { data } = resposta;
             setListarRegistro(data);
@@ -35,7 +35,7 @@ const Registros = () => {
             console.log(error);
         });
     }, [token]);
-    console.log(listarRegistro);
+    
     return (
         <Container>
             <Menu>

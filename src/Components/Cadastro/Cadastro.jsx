@@ -15,7 +15,7 @@ const Cadastro = () => {
             setAlerta("As senhas não conferem");
             return;
         }
-        const requisicaoPost = axios.post('http://localhost:5000/cadastrar',dadosCadastro);
+        const requisicaoPost = axios.post('http://localhost:5000/cadastro',dadosCadastro);
         requisicaoPost.then(resposta =>{
             navigate('/');
         });requisicaoPost.catch(error =>{

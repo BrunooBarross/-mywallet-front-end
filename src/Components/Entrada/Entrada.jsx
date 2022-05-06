@@ -23,7 +23,7 @@ const Entrada = () => {
         valorConvertido = valorConvertido.replace(".", "");
         valorConvertido = valorConvertido.replace(",", ".");
         
-        const requisicaoPost = axios.post("http://localhost:5000/credito",{
+        const requisicaoPost = axios.post("http://localhost:5000/registro",{
             tipo: "entrada",
             data: dayjs().locale('pt-br').format('DD/MM'),
             valor: valorConvertido,

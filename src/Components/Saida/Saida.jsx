@@ -16,14 +16,14 @@ const Saida = () => {
     const navigate = useNavigate();
     const [valor, setValor] = useState("");
     const [descricao, setDescricao] = useState("");
-    console.log(dayjs().locale('pt-br').format('DD/MM'));
+
     function debitarValor(event){
         event.preventDefault();
         let valorConvertido = valor.toString().replace("R$", "")
         valorConvertido = valorConvertido.replace(".", "");
         valorConvertido = valorConvertido.replace(",", ".");
         
-        const requisicaoPost = axios.post("http://localhost:5000/debito",{
+        const requisicaoPost = axios.post("http://localhost:5000/registro",{
             tipo: "saida",
             data: dayjs().locale('pt-br').format('DD/MM'),
             valor: valorConvertido,
