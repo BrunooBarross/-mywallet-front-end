@@ -16,9 +16,8 @@ const Login = () => {
     function realizarLogin(event){
         event.preventDefault();
         setAlerta("");
-        const requisicaoPost = axios.post('http://localhost:5000/login',dadosLogin);
+        const requisicaoPost = axios.post('http://localhost:5000/sign-in',dadosLogin);
         requisicaoPost.then(resposta =>{
-            console.log(resposta.data);
             setToken (resposta.data.token);
             setNomeUsuario (resposta.data.nome);
             navigate('/registros');
