@@ -22,6 +22,7 @@ const Registro = ({ id, tipo, data, valor, descricao, token, listarRegistro, set
                 }
                 if(Math.sign(resultado) === 1){setSinalResultado(true);}
                 if(Math.sign(resultado) === -1){setSinalResultado(false);}
+                if (resultado === 0) { setSinalResultado("neutro");}
                 const resultadoConvertido =  resultado.toLocaleString('pt-br', {minimumFractionDigits: 2});
                 setSaldo(resultadoConvertido);
             });

@@ -18,11 +18,16 @@ const Login = () => {
         setAlerta("");
         const requisicaoPost = axios.post('http://localhost:5000/sign-in',dadosLogin);
         requisicaoPost.then(resposta =>{
+            localStorage.setItem("userToken", JSON.stringify(resposta.data.token))
+            localStorage.setItem("userName", JSON.stringify(resposta.data.nome))
             setToken (resposta.data.token);
             setNomeUsuario (resposta.data.nome);
             navigate('/registros');
         });requisicaoPost.catch(error =>{
             if(error.response.status === 409){
+                setAlerta("Email ou senha incorretos");
+            }
+            if(error.response.status === 422){
                 setAlerta("Email ou senha incorretos");
             }
             console.log(error);

@@ -35,7 +35,11 @@ const Entrada = () => {
             console.log(error);
         })
     }
-    
+    if(!token){
+        return(
+            <Container></Container>
+        );
+    }
     return(
         <Container>
             <h1>Nova entrada</h1>

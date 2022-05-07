@@ -35,6 +35,11 @@ const Saida = () => {
             console.log(error);
         })
     }
+    if(!token){
+        return(
+            <Container></Container>
+        );
+    }
     return(
         <Container>
             <h1>Nova saída</h1>
