@@ -53,6 +53,10 @@ const Registros = () => {
                                     valor={item.valor}
                                     descricao={item.descricao}
                                     token={token}
+                                    listarRegistro={listarRegistro}
+                                    setListarRegistro={setListarRegistro}
+                                    setSaldo={setSaldo}
+                                    setSinalResultado={setSinalResultado}
                 />)}     
                 
             </RegistrosContainer>

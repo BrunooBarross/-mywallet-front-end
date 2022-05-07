@@ -1,7 +1,35 @@
 import styled from 'styled-components';
+import axios from 'axios';
 
-const Registro = ({ id, tipo, data, valor, descricao, token }) => {
+const Registro = ({ id, tipo, data, valor, descricao, token, listarRegistro, setListarRegistro, setSaldo, setSinalResultado }) => {
     const valorConvertido = parseFloat(valor).toLocaleString('pt-br', {minimumFractionDigits: 2});
+    function deletarRegistro(id, token){
+        const config = { headers: { Authorization: `Bearer ${token}`}};
+        let dialog = window.confirm(`Deseja realmente excluir o registro?`);
+        if (dialog) {
+            const requisicaoDelete = axios.delete(`http://localhost:5000/registro/${id}`, config);
+            requisicaoDelete.then(resposta => {
+                const novoArrayRegistro = listarRegistro.filter(item => item._id !== id);
+                setListarRegistro(novoArrayRegistro);
+                let resultado = 0;
+                for(const property in novoArrayRegistro){
+                    if(novoArrayRegistro[property].tipo === 'entrada'){
+                        resultado = resultado + parseFloat(novoArrayRegistro[property].valor);
+                    }
+                    if(novoArrayRegistro[property].tipo === 'saida'){
+                        resultado = resultado - parseFloat(novoArrayRegistro[property].valor);
+                    }
+                }
+                if(Math.sign(resultado) === 1){setSinalResultado(true);}
+                if(Math.sign(resultado) === -1){setSinalResultado(false);}
+                const resultadoConvertido =  resultado.toLocaleString('pt-br', {minimumFractionDigits: 2});
+                setSaldo(resultadoConvertido);
+            });
+            requisicaoDelete.catch(error => {
+                console.log("Não foi possível deletar o hábito", error);
+            });
+        } 
+    }
     return (
         <Container>
             <div>
@@ -10,7 +38,7 @@ const Registro = ({ id, tipo, data, valor, descricao, token }) => {
             </div>
             <div>
                 <Valor tipo={tipo}>{valorConvertido}</Valor>
-                <ion-icon name="close-outline"></ion-icon>
+                <ion-icon  onClick={() => deletarRegistro(id, token)} name="close-outline"></ion-icon>
             </div>
         </Container>
     );
