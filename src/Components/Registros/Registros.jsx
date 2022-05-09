@@ -123,6 +123,12 @@ const Container = styled.div`
     }
     .teste div{
         margin-left: 15px;
+        font-family: 'Raleway';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 17px;
+        line-height: 20px;
+        color: #000000;
     }
 `
 const Menu = styled.div`
