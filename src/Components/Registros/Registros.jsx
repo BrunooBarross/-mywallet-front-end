@@ -209,6 +209,9 @@ const Nav = styled.div`
         margin-left: 12px;
         margin-top: 32px;
     }
+    a{
+        text-decoration: none;
+    }
 `
 const Saldo = styled.span`
         margin-right: 11px;
