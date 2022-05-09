@@ -15,7 +15,7 @@ const Registros = () => {
 
     useEffect(() => {
         const config = { headers: { Authorization: `Bearer ${token}` } }
-        const requisicaoGet = axios.get("http://localhost:5000/registro", config);
+        const requisicaoGet = axios.get("https://mywallet-api-driven.herokuapp.com/registro", config);
         requisicaoGet.then(resposta => {
             const { data } = resposta;
             setListarRegistro(data);

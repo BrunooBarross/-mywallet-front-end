@@ -16,7 +16,7 @@ const Login = () => {
     function realizarLogin(event){
         event.preventDefault();
         setAlerta("");
-        const requisicaoPost = axios.post('http://localhost:5000/sign-in',dadosLogin);
+        const requisicaoPost = axios.post('https://mywallet-api-driven.herokuapp.com/sign-in',dadosLogin);
         requisicaoPost.then(resposta =>{
             localStorage.setItem("userToken", JSON.stringify(resposta.data.token))
             localStorage.setItem("userName", JSON.stringify(resposta.data.nome))
