@@ -60,28 +60,29 @@ const Registros = () => {
                                 <span>Não há registros de entrada ou saída</span>
                             </SemRegistro>
                         </RegistrosContainer> :
-                        <RegistrosContainer>
-                            {listarRegistro.map((item, key) =>
-                                <Registro
-                                    key={key}
-                                    id={item._id}
-                                    tipo={item.tipo}
-                                    data={item.data}
-                                    valor={item.valor}
-                                    descricao={item.descricao}
-                                    token={token}
-                                    listarRegistro={listarRegistro}
-                                    setListarRegistro={setListarRegistro}
-                                    setSaldo={setSaldo}
-                                    setSinalResultado={setSinalResultado}
-                                />)}
-                        </RegistrosContainer>
+                        <>
+                             <RegistrosContainer>
+                                {listarRegistro.map((item, key) =>
+                                    <Registro
+                                        key={key}
+                                        id={item._id}
+                                        tipo={item.tipo}
+                                        data={item.data}
+                                        valor={item.valor}
+                                        descricao={item.descricao}
+                                        token={token}
+                                        listarRegistro={listarRegistro}
+                                        setListarRegistro={setListarRegistro}
+                                        setSaldo={setSaldo}
+                                        setSinalResultado={setSinalResultado}
+                                    />)}
+                            </RegistrosContainer>
+                            <div className="teste">
+                                <div>SALDO</div>
+                                <Saldo sinal={sinalResultado}>{saldo}</Saldo>
+                            </div> 
+                        </>
                     }
-
-                    <div className="teste">
-                        <div>SALDO</div>
-                        <Saldo sinal={sinalResultado}>{saldo}</Saldo>
-                    </div>
                     <Nav>
                         <div>
                             <Link to={`/entrada`}>
