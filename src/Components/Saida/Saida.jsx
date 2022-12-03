@@ -23,7 +23,7 @@ const Saida = () => {
         valorConvertido = valorConvertido.replace(".", "");
         valorConvertido = valorConvertido.replace(",", ".");
         
-        const requisicaoPost = axios.post("https://mywallet-api-driven.herokuapp.com/registro",{
+        const requisicaoPost = axios.post(`${process.env.REACT_APP_API_BASE_URL}/registro`,{
             tipo: "saida",
             data: dayjs().locale('pt-br').format('DD/MM'),
             valor: valorConvertido,

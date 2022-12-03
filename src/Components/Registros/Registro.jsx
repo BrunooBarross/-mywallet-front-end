@@ -7,7 +7,7 @@ const Registro = ({ id, tipo, data, valor, descricao, token, listarRegistro, set
         const config = { headers: { Authorization: `Bearer ${token}`}};
         let dialog = window.confirm(`Deseja realmente excluir o registro?`);
         if (dialog) {
-            const requisicaoDelete = axios.delete(`https://mywallet-api-driven.herokuapp.com/registro/${id}`, config);
+            const requisicaoDelete = axios.delete(`${process.env.REACT_APP_API_BASE_URL}/registro/${id}`, config);
             requisicaoDelete.then(resposta => {
                 const novoArrayRegistro = listarRegistro.filter(item => item._id !== id);
                 setListarRegistro(novoArrayRegistro);

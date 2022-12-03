@@ -15,7 +15,7 @@ const Cadastro = () => {
             setAlerta("As senhas não conferem");
             return;
         }
-        const requisicaoPost = axios.post('https://mywallet-api-driven.herokuapp.com/sign-up',dadosCadastro);
+        const requisicaoPost = axios.post(`${process.env.REACT_APP_API_BASE_URL}/sign-up`,dadosCadastro);
         requisicaoPost.then(resposta =>{
             navigate('/');
         });requisicaoPost.catch(error =>{
