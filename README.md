@@ -22,7 +22,10 @@
 
 $ git clone https://github.com/BrunooBarross/-mywallet-front-end
 
-$ Abra um terminal na pasta do projeto e rode os comandos:
+```
+- Abra um terminal na pasta do projeto e rode os comandos:
+
+```bash
 
 $ npm i 
 
